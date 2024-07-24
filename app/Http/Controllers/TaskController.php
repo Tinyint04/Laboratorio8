@@ -24,13 +24,14 @@ class TaskController extends Controller
                          ->latest()
                          ->paginate(10);
         } else {
-            // Si no hay un usuario autenticado, crea una instancia vacía de LengthAwarePaginator
-            $tasks = new LengthAwarePaginator([], 0, 10);
+            // Obtén todas las tareas si no hay un usuario autenticado
+            $tasks = Task::with('user', 'etiquetas')
+                         ->latest()
+                         ->paginate(10);
         }
     
         return view('tasks.index', ['tasks' => $tasks]);
     }
-    
 
     public function create()
     {
